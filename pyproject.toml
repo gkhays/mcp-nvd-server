@@ -1,0 +1,25 @@
+[project]
+name = "mcp-nvd"
+version = "0.1.0"
+description = "MCP server that retrieves CVEs"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "dotenv>=0.9.9",
+    "mcp>=1.7.0",
+    "pytest>=8.3.5",
+    "requests>=2.32.3",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+
+[project.scripts]
+mcp-nvd = "mcp_nvd:main"
