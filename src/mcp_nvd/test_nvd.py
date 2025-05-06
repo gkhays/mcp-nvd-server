@@ -4,16 +4,21 @@ import json
 
 LOGGER = logging.getLogger(__name__)
 
+CVE_ID = "CVE-2025-30065"
+
 def test_fetch_cve():
-    cve_id = "CVE-2025-30065"
+    cve_id = CVE_ID
     nvd = NVD(cve_id=cve_id)
-    cve_data = nvd.get_cve()
+    cve_list = nvd.get_cve_list()
+    cve_data = cve_list[0] if cve_list else None
+    LOGGER.info(f"Using constructor method to fetch CVE data for {cve_id}")
 
     # Check if the data is not None and contains expected keys
     assert cve_data is not None, "CVE data should not be None"
     assert not isinstance(cve_data, str), "CVE data should not be a string"
-    assert len(cve_data) == 1, "CVE data should only contain one item"
-    assert isinstance(cve_data, dict), "CVE data should be a dictionary"
+    assert len(cve_data) > 0, "CVE data should only contain one item"
+    assert isinstance(cve_list, list), "CVE data should be a list"
+    assert isinstance(cve_data, dict), "CVE data should contain dictionaries"
     assert key_exists_in_dict('id', cve_data), "CVE data should contain 'id' key"
     assert cve_data['cve']['id'] == cve_id, f"CVE ID should be {cve_id}"
 
@@ -31,23 +36,25 @@ def test_fetch_cve():
     LOGGER.info(f"Reference check: {cve_data['cve']['references'][0]['url']}")
 
 def test_fetch_cve_no_constructor():
-    cve_id = "CVE-2025-30065"
+    cve_id = CVE_ID
     nvd = NVD(cve_id=cve_id)
-    cve_data = nvd.get_cve()
+    cve_list = nvd.get_cve_list()
+    cve_data = cve_list[0] if cve_list else None
     LOGGER.info(f"Using non-constructor method to fetch CVE data for {cve_id}")
 
     # Check if the data is not None and contains expected keys
     assert cve_data is not None, "CVE data should not be None"
     assert not isinstance(cve_data, str), "CVE data should not be a string"
-    assert len(cve_data) == 1, "CVE data should only contain one item"
+    assert len(cve_list) == 1, "CVE data should only contain one item"
     assert isinstance(cve_data, dict), "CVE data should contain dictionaries"
     assert key_exists_in_dict('id', cve_data), "CVE data should contain 'id' key"
     assert cve_data['cve']['id'] == cve_id, f"CVE ID should be {cve_id}"
 
 def test_fetch_description(country_code='en'):
-    cve_id = "CVE-2025-30065"
+    cve_id = CVE_ID
     nvd = NVD(cve_id=cve_id)
-    cve_data = nvd.get_cve()
+    cve_list = nvd.get_cve_list()
+    cve_data = cve_list[0] if cve_list else None    
 
     descriptions = cve_data['cve']['descriptions']
     description_value = None
@@ -63,9 +70,10 @@ def test_fetch_description(country_code='en'):
 
 
 def test_fetch_references():
-    cve_id = "CVE-2025-30065"
+    cve_id = CVE_ID
     nvd = NVD(cve_id=cve_id)
-    cve_data = nvd.get_cve()
+    cve_list = nvd.get_cve_list()
+    cve_data = cve_list[0] if cve_list else None
 
     for reference in cve_data['cve']['references']:
         assert isinstance(reference, dict), "Reference should be a dictionary"

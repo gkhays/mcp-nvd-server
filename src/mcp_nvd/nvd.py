@@ -25,7 +25,7 @@ class NVD:
         self.base_url = "https://services.nvd.nist.gov/rest/json/cves/2.0"
         LOGGER.debug(f"Initializing NVD with CVE ID: {cve_id}")
 
-    def get_cve(self) -> dict:
+    def get_cve_list(self) -> list:
         """
         Retrieve a specific CVE by its ID.
 
@@ -53,7 +53,7 @@ class NVD:
                     self.cve_json = vulnerabilities[0]
                     self.description = self.get_description()
                     LOGGER.info(f"Description: {self.description}")
-                    return vulnerabilities[0]
+                    return vulnerabilities
                 else:
                     LOGGER.info(f"CVE {self.cve_id} not found in NVD database.")
                     return None
