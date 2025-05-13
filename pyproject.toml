@@ -5,6 +5,7 @@ description = "MCP server that retrieves CVEs"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "bs4>=0.0.2",
     "dotenv>=0.9.9",
     "mcp>=1.7.0",
     "pytest>=8.3.5",
