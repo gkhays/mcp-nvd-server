@@ -57,7 +57,7 @@ async def nvd_tool(name: str, arguments: dict) -> Sequence[TextContent | ImageCo
     cve_id = arguments.get("cve_id")
 
     nvd = NVD(cve_id=cve_id)
-    cve_data = nvd.get_cve()
+    cve_data = nvd.get_cve_list()
 
     if cve_data:
         # return cve_data
